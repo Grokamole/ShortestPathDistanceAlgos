@@ -203,7 +203,7 @@ int Maze::MinimumNumberOfSpacesDFS( const size_t start_row, const size_t start_c
 
     std::vector<std::vector<bool>> traversed( m_rowSize, std::vector<bool>( m_columnSize, false ) );  // holds the list of traversed spaces
 
-    traversed[start_column][start_row] = true; // the starting position is traversed
+    traversed[start_row][start_column] = true; // the starting position is traversed
     
     std::vector<int> smallest_path; // holds the smallest paths
 

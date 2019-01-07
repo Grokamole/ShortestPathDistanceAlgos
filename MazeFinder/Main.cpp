@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
-#include <fstream>
+#include <sstream>
 #include "Maze.h"
 
 static constexpr char OPTION_LOAD_FILE = '1'; ///< The option to load a file.
@@ -13,6 +13,7 @@ static constexpr char OPTION_QUIT = 'q'; ///< The option to quit.
 
 static constexpr size_t SINGLE_CHAR_SIZE = 1; ///< Single character size.
 static constexpr size_t FIRST_CHARACTER  = 0; ///< Used to denote the first character in an array.
+static constexpr int PATH_UNREACHABLE = -1; ///< Used to denote a path as unreachable
 
 /** Displays the main menu.
 
@@ -69,6 +70,18 @@ bool ValidateUserInput( const char input, const bool mazeFileLoaded )
     }
 }
 
+/** Gets the filename from the user.
+
+@return the user's chosen filename for a maze file.
+*/
+std::string GetUserFilename()
+{
+    std::string filename;
+    std::cout << "Please enter filename: ";
+    std::cin >> filename;
+    return filename;
+}
+
 /** Get a valid option from the user.
 
 @param filename The filename of the currently loaded file.
@@ -106,6 +119,36 @@ bool LoadFile( Maze& maze, const std::string & filename )
     return maze.LoadMaze( filename );
 }
 
+/** Gets the starting coordinates for a run.
+
+@param maxRow The maximum row index.
+@param maxColumn The maximum column index.
+
+@return a pair of starting coordinates in user X,Y order
+*/
+std::pair<size_t, size_t> GetStartingCoordinates( const size_t maxRow, const size_t maxColumn )
+{
+    std::string userOption;
+    int x;
+    int y;
+    char comma;
+    while ( userOption.empty() )
+    {
+        std::cout << "Please enter starting coordinate [0-" << maxColumn << ",0-" << maxRow << "] as X,Y: ";
+        std::cin >> userOption;
+        std::istringstream parseLine( userOption ); // used to parse user option
+
+        parseLine >> x >> comma >> y; // get the x, comma, and y coordinate
+
+        if ( parseLine.fail() || ( ',' != comma ) || x > maxColumn || y > maxRow )
+        {
+            userOption.clear();
+            std::cout << std::endl;
+        }
+    }
+    return { x, y };
+}
+
 /** Main. Runs the MazeFinder program.
 
 @param argc Unused.
@@ -126,7 +169,7 @@ int main( int argc, char ** argv )
             case OPTION_LOAD_FILE:
             {
                 std::cout << "Loading file..." << std::endl;
-                filename = "1.txt";
+                filename = GetUserFilename();
                 if ( !LoadFile( maze, filename ) )
                 {
                     std::cout << "Error loading file: " << filename << std::endl;
@@ -141,8 +184,9 @@ int main( int argc, char ** argv )
             case OPTION_EXECUTE_DFS:
             {
                 std::cout << "Executing Depth First Search..." << std::endl;
-                int minimumNumSteps = maze.MinimumNumberOfSpacesDFS( 1, 1 );
-                if ( minimumNumSteps == -1 )
+                const std::pair<size_t, size_t> coordinates = GetStartingCoordinates( maze.GetRowSize() - 1, maze.GetColumnSize() - 1 );
+                const int minimumNumSteps = maze.MinimumNumberOfSpacesDFS( coordinates.second, coordinates.first );
+                if ( minimumNumSteps == PATH_UNREACHABLE )
                 {
                     std::cout << "No solvable minimum path..." << std::endl;
                 }
@@ -154,8 +198,9 @@ int main( int argc, char ** argv )
             case OPTION_EXECUTE_BFS:
             {
                 std::cout << "Executing Breadth First Search..." << std::endl;
-                int minimumNumSteps = maze.MinimumNumberOfSpacesBFS( 1, 1 );
-                if ( minimumNumSteps == -1 )
+                const std::pair<size_t, size_t> coordinates = GetStartingCoordinates( maze.GetRowSize() - 1, maze.GetColumnSize() - 1 );
+                const int minimumNumSteps = maze.MinimumNumberOfSpacesBFS( coordinates.second, coordinates.first );
+                if ( minimumNumSteps == PATH_UNREACHABLE )
                 {
                     std::cout << "No solvable minimum path..." << std::endl;
                 }
