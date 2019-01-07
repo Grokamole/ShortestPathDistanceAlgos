@@ -13,7 +13,8 @@ static constexpr char OPTION_QUIT = 'q'; ///< The option to quit.
 
 static constexpr size_t SINGLE_CHAR_SIZE = 1; ///< Single character size.
 static constexpr size_t FIRST_CHARACTER  = 0; ///< Used to denote the first character in an array.
-static constexpr int PATH_UNREACHABLE = -1; ///< Used to denote a path as unreachable
+static constexpr char NULL_TERMINATOR = 0; ///< Used to denote a null terminator for a char.
+static constexpr int PATH_UNREACHABLE = -1; ///< Used to denote a path as unreachable.
 
 /** Displays the main menu.
 
@@ -91,7 +92,7 @@ std::string GetUserFilename()
 char GetUserOption( const std::string & filename )
 {
     std::string userInput;
-    char output = NULL;
+    char output = NULL_TERMINATOR;
 
     do
     {
