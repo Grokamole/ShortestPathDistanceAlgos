@@ -4,21 +4,20 @@
 #include <fstream>
 #include "Maze.h"
 
-static constexpr char OPTION_LOAD_FILE = '1';
-static constexpr char OPTION_PRINT_MAZE = '2';
-static constexpr char OPTION_EXECUTE_DFS = '3';
-static constexpr char OPTION_EXECUTE_BFS = '4';
-static constexpr char OPTION_RELOAD_FILE = '5';
-static constexpr char OPTION_QUIT = 'q';
+static constexpr char OPTION_LOAD_FILE = '1'; ///< The option to load a file.
+static constexpr char OPTION_PRINT_MAZE = '2'; ///< The option to print the maze.
+static constexpr char OPTION_EXECUTE_DFS = '3'; ///< The option to execute depth first search.
+static constexpr char OPTION_EXECUTE_BFS = '4'; ///< The option to execute breadth first search.
+static constexpr char OPTION_RELOAD_FILE = '5'; ///< The option to reload the file.
+static constexpr char OPTION_QUIT = 'q'; ///< The option to quit.
 
-static constexpr size_t SINGLE_CHAR_SIZE = 1;
-static constexpr size_t FIRST_CHARACTER  = 0;
+static constexpr size_t SINGLE_CHAR_SIZE = 1; ///< Single character size.
+static constexpr size_t FIRST_CHARACTER  = 0; ///< Used to denote the first character in an array.
 
-bool ImportMaze( const std::string & filename )
-{
-    return true;
-}
+/** Displays the main menu.
 
+@param filename The currently selected filename.
+*/
 void DisplayMenu(const std::string & filename)
 {
     std::cout << "\n"
@@ -36,6 +35,14 @@ void DisplayMenu(const std::string & filename)
     std::cout << "Please enter your option: ";
 }
 
+/** Validates the user's input option.
+
+@param input The user's choice.
+@param mazeFileLoaded Whether the maze file is loaded.
+
+@retval true if the user's input is valid.
+@retval false if the user's input is invalid.
+*/
 bool ValidateUserInput( const char input, const bool mazeFileLoaded )
 {
     switch ( static_cast<const char>( tolower( input ) ) )
@@ -62,6 +69,12 @@ bool ValidateUserInput( const char input, const bool mazeFileLoaded )
     }
 }
 
+/** Get a valid option from the user.
+
+@param filename The filename of the currently loaded file.
+
+@return The character representing the user's valid character option.
+*/
 char GetUserOption( const std::string & filename )
 {
     std::string userInput;
@@ -80,11 +93,26 @@ char GetUserOption( const std::string & filename )
     return output;
 }
 
+/** Load a maze file.
+
+@param maze The maze to load the file into.
+@param filename The filename to load into the maze.
+
+@retval true If the maze could be successfully loaded.
+@retval false If the maze could not be successfully loaded.
+*/
 bool LoadFile( Maze& maze, const std::string & filename )
 {
     return maze.LoadMaze( filename );
 }
 
+/** Main. Runs the MazeFinder program.
+
+@param argc Unused.
+@param argv Unused.
+
+@return EXIT_SUCCESS.
+*/
 int main( int argc, char ** argv )
 {
     std::string filename;
@@ -156,6 +184,6 @@ int main( int argc, char ** argv )
         }
         choice = GetUserOption( filename );
     }
-    system( "pause" );
+
     return EXIT_SUCCESS;
 }

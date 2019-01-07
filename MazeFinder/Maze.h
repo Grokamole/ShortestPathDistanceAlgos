@@ -31,6 +31,7 @@ class Maze
         void ReallocateMaze( const size_t rows, const size_t columns );
 
         int DepthFirstRecursion( const size_t current_row, const size_t current_column, std::vector<std::vector<bool>> & traversed, const int nodesInPath, int& numSteps) const;
+        void AddValueToPathSizeVectorIfPositive( std::vector<int>& pathSizes, const int value ) const;
 
         size_t m_rowSize{ 0 };
         size_t m_columnSize{ 0 };
