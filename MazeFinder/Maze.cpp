@@ -1,3 +1,5 @@
+// Joseph Miller (c) 2019
+
 #include "Maze.h"
 #include <fstream>
 #include <sstream>

@@ -1,3 +1,4 @@
+// Joseph Miller (c) 2019
 #include <iostream>
 #include <cstdlib>
 #include <string>

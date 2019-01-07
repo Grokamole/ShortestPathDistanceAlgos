@@ -1,3 +1,4 @@
+// Joseph Miller (c) 2019
 #ifndef __MAZE_H
 #define __MAZE_H
 
